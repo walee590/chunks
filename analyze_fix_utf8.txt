@@ -1,0 +1,25 @@
+﻿Analyzing lib...                                                
+
+warning - Unused import: 'dart:convert' - lib\screens\drawing_screen.dart:1:8 - unused_import
+   info - The private field _strokeWidth could be 'final' - lib\screens\drawing_screen.dart:24:10 - prefer_final_fields
+   info - Unnecessary use of multiple underscores - lib\screens\drawing_screen.dart:187:39 - unnecessary_underscores
+warning - Unused import: 'dart:convert' - lib\screens\note_editor_screen.dart:1:8 - unused_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\note_editor_screen.dart:3:8 - unnecessary_import
+warning - Unused import: '../theme/app_theme.dart' - lib\screens\note_editor_screen.dart:9:8 - unused_import
+warning - The value of the local variable 'lines' isn't used - lib\screens\note_editor_screen.dart:382:22 - unused_local_variable
+   info - Use interpolation to compose strings and values - lib\screens\note_editor_screen.dart:395:58 - prefer_interpolation_to_compose_strings
+   info - Unnecessary use of multiple underscores - lib\screens\note_editor_screen.dart:538:57 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\note_editor_screen.dart:548:63 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\note_editor_screen.dart:548:67 - unnecessary_underscores
+warning - Unused import: 'dart:math' - lib\screens\onboarding_screen.dart:4:8 - unused_import
+   info - Unnecessary use of multiple underscores - lib\screens\onboarding_screen.dart:25:26 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\onboarding_screen.dart:25:30 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\onboarding_screen.dart:26:44 - unnecessary_underscores
+   info - The variable name '_buildPage1_Mindfulness' isn't a lowerCamelCase identifier - lib\screens\onboarding_screen.dart:121:10 - non_constant_identifier_names
+   info - The variable name '_buildPage2_Comparison' isn't a lowerCamelCase identifier - lib\screens\onboarding_screen.dart:154:10 - non_constant_identifier_names
+  error - The named parameter 'settings' is required, but there's no corresponding argument - lib\services\notification_service.dart:35:43 - missing_required_argument
+  error - The named parameter 'initializationSettings' isn't defined - lib\services\notification_service.dart:36:7 - undefined_named_parameter
+warning - Unused import: 'dart:convert' - lib\widgets\note_card.dart:1:8 - unused_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\widgets\note_card.dart:3:8 - unnecessary_import
+warning - The operand can't be 'null', so the condition is always 'true' - lib\widgets\note_card.dart:225:61 - unnecessary_null_comparison
+

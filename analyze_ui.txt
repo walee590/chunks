@@ -1,0 +1,24 @@
+﻿Analyzing chunks...                                             
+
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:141:45 - deprecated_member_use
+
+flutter : 1 issue 
+found. (ran in 1.6s)
+At line:1 char:1
++ flutter analyze 
+2>&1 | Out-File 
+-FilePath 
+analyze_ui.txt 
+-Encoding ut ...
++ 
+~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (1 issue   
+  found. (ran in     
+1.6s):String) []    
+, RemoteExceptio    n
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 

@@ -1,0 +1,42 @@
+Resolving dependencies...
+Downloading packages...
+  characters 1.4.0 (1.4.1 available)
+  ffi 2.1.5 (2.2.0 available)
+  matcher 0.12.17 (0.12.18 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.17.0 (1.18.1 available)
+  test_api 0.7.7 (0.7.9 available)
+Got dependencies!
+6 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing chunks...                                             
+
+warning - The declaration '_showLineContextMenu' isn't referenced - backups\lib_backup_1\screens\note_editor_screen.dart:92:8 - unused_element
+warning - The declaration '_addChildNote' isn't referenced - backups\lib_backup_1\screens\note_editor_screen.dart:233:8 - unused_element
+warning - The value of the local variable 'cardColor' isn't used - backups\lib_backup_1\screens\note_editor_screen.dart:261:15 - unused_local_variable
+warning - Unused import: 'dart:convert' - lib\screens\drawing_screen.dart:1:8 - unused_import
+   info - The private field _strokeWidth could be 'final' - lib\screens\drawing_screen.dart:24:10 - prefer_final_fields
+   info - Unnecessary use of multiple underscores - lib\screens\drawing_screen.dart:187:39 - unnecessary_underscores
+warning - Unused import: 'dart:convert' - lib\screens\note_editor_screen.dart:1:8 - unused_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\note_editor_screen.dart:3:8 - unnecessary_import
+warning - Unused import: '../theme/app_theme.dart' - lib\screens\note_editor_screen.dart:9:8 - unused_import
+warning - The value of the local variable 'lines' isn't used - lib\screens\note_editor_screen.dart:278:22 - unused_local_variable
+   info - Use interpolation to compose strings and values - lib\screens\note_editor_screen.dart:291:58 - prefer_interpolation_to_compose_strings
+   info - Unnecessary use of multiple underscores - lib\screens\note_editor_screen.dart:427:57 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\note_editor_screen.dart:437:63 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\note_editor_screen.dart:437:67 - unnecessary_underscores
+warning - Unused import: 'dart:convert' - lib\widgets\note_card.dart:1:8 - unused_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\widgets\note_card.dart:3:8 - unnecessary_import
+warning - The operand can't be 'null', so the condition is always 'true' - lib\widgets\note_card.dart:202:61 - unnecessary_null_comparison
+warning - The declaration '_showLineContextMenu' isn't referenced - lib_backup_checklist\screens\note_editor_screen.dart:92:8 - unused_element
+warning - The declaration '_addChildNote' isn't referenced - lib_backup_checklist\screens\note_editor_screen.dart:233:8 - unused_element
+warning - The value of the local variable 'cardColor' isn't used - lib_backup_checklist\screens\note_editor_screen.dart:261:15 - unused_local_variable
+warning - The operand can't be 'null', so the condition is always 'true' - lib_backup_checklist\widgets\note_card.dart:112:61 - unnecessary_null_comparison
+warning - The declaration '_convertLineToNote' isn't referenced - lib_backup_checklist_v1\screens\note_editor_screen.dart:89:8 - unused_element
+warning - The declaration '_deleteLine' isn't referenced - lib_backup_checklist_v1\screens\note_editor_screen.dart:113:8 - unused_element
+warning - The declaration '_addChildNote' isn't referenced - lib_backup_checklist_v1\screens\note_editor_screen.dart:146:8 - unused_element
+   info - Unnecessary use of 'toList' in a spread - lib_backup_checklist_v1\screens\note_editor_screen.dart:272:14 - unnecessary_to_list_in_spreads
+   info - Use interpolation to compose strings and values - lib_backup_checklist_v1\screens\note_editor_screen.dart:277:52 - prefer_interpolation_to_compose_strings
+warning - The operand can't be 'null', so the condition is always 'true' - lib_backup_checklist_v1\widgets\note_card.dart:112:61 - unnecessary_null_comparison
+
+27 issues found. (ran in 1.6s)
