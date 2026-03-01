@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -67,18 +66,14 @@ class BinScreen extends StatelessWidget {
 
   void _confirmEmptyBin(BuildContext context) {
      final provider = Provider.of<NotesProvider>(context, listen: false);
-     showCupertinoDialog(
+     showDialog(
        context: context,
-       builder: (ctx) => CupertinoAlertDialog(
+       builder: (ctx) => AlertDialog(
          title: const Text('Empty Bin?'),
          content: const Text('All notes in the bin will be permanently deleted. This action cannot be undone.'),
          actions: [
-           CupertinoDialogAction(
-             onPressed: () => Navigator.pop(ctx),
-             child: const Text('Cancel'),
-           ),
-           CupertinoDialogAction(
-             isDestructiveAction: true,
+           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+           TextButton(
              onPressed: () {
                 provider.emptyBin();
                 Navigator.pop(ctx);
@@ -86,7 +81,7 @@ class BinScreen extends StatelessWidget {
                   const SnackBar(content: Text('Bin emptied'), duration: Duration(seconds: 1)),
                 );
              },
-             child: const Text('Empty Bin'),
+             child: const Text('Empty Bin', style: TextStyle(color: Colors.redAccent)),
            ),
          ],
        ),

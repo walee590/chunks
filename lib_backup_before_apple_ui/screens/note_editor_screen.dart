@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/note.dart';
 import '../providers/notes_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/color_picker.dart';
 import '../widgets/note_card.dart';
 
@@ -279,51 +280,23 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
               ElevatedButton.icon(
                 onPressed: () async {
                     Navigator.pop(ctx); // Close sheet before opening dialogs
-                    DateTime? selectedDate = DateTime.now();
-                    
-                    await showCupertinoModalPopup(
+                    final date = await showDatePicker(
                       context: context,
-                      builder: (BuildContext pickerCtx) {
-                        return Container(
-                          height: 300,
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CupertinoButton(
-                                    child: const Text('Cancel'),
-                                    onPressed: () {
-                                      selectedDate = null;
-                                      Navigator.pop(pickerCtx);
-                                    },
-                                  ),
-                                  CupertinoButton(
-                                    child: const Text('Done', style: TextStyle(fontWeight: FontWeight.bold)),
-                                    onPressed: () => Navigator.pop(pickerCtx),
-                                  ),
-                                ],
-                              ),
-                              Expanded(
-                                child: CupertinoDatePicker(
-                                  mode: CupertinoDatePickerMode.dateAndTime,
-                                  initialDateTime: DateTime.now(),
-                                  minimumDate: DateTime.now(),
-                                  onDateTimeChanged: (DateTime newDate) {
-                                    selectedDate = newDate;
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
                     );
+                    if (date == null) return;
                     
-                    if (selectedDate != null) {
-                       provider.updateReminder(note.id, selectedDate!);
-                    }
+                    if (!context.mounted) return;
+                    final time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (time == null) return;
+
+                    final reminderDate = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+                    provider.updateReminder(note.id, reminderDate);
                 },
                 icon: const Icon(Icons.more_time),
                 label: const Text('Custom Date & Time'),
@@ -343,59 +316,64 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   }
 
   void _showMoreOptionsBottomSheet(BuildContext context, NotesProvider provider, Note note) {
-    showCupertinoModalPopup(
+    showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext ctx) {
-        return CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                final messenger = ScaffoldMessenger.of(context);
-                provider.deleteNote(widget.noteId);
-                Navigator.pop(ctx);
-                Navigator.pop(context);
-                messenger.showSnackBar(
-                  const SnackBar(
-                    content: Text('Note deleted'),
-                    duration: Duration(seconds: 1),
-                  ),
-                );
-              },
-              isDestructiveAction: true,
-              child: const Text('Delete'),
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                 provider.toggleArchive(widget.noteId);
-                 final isNowArchived = !note.isArchived;
-                 Navigator.pop(ctx);
-                 ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(
-                     content: Text(isNowArchived ? 'Note archived' : 'Note unarchived'),
-                     duration: const Duration(seconds: 1),
-                   ),
-                 );
-                 if (isNowArchived) {
-                   _saveNote();
-                   Navigator.pop(context);
-                 }
-              },
-              child: Text(note.isArchived ? 'Unarchive' : 'Archive'),
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(ctx);
-                _shareNote(note);
-              },
-              child: const Text('Send'),
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            onPressed: () {
-              Navigator.pop(ctx);
-            },
-            isDefaultAction: true,
-            child: const Text('Cancel'),
+        final theme = Theme.of(context);
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.delete_outline),
+                title: const Text('Delete'),
+                onTap: () {
+                  final messenger = ScaffoldMessenger.of(context);
+                  provider.deleteNote(widget.noteId);
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                  messenger.showSnackBar(
+                    const SnackBar(
+                      content: Text('Note deleted'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(note.isArchived ? Icons.unarchive : Icons.archive_outlined),
+                title: Text(note.isArchived ? 'Unarchive' : 'Archive'),
+                onTap: () {
+                   provider.toggleArchive(widget.noteId);
+                   final isNowArchived = !note.isArchived;
+                   Navigator.pop(ctx);
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                       content: Text(isNowArchived ? 'Note archived' : 'Note unarchived'),
+                       duration: const Duration(seconds: 1),
+                     ),
+                   );
+                   if (isNowArchived) {
+                     _saveNote();
+                     Navigator.pop(context);
+                   }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.share_outlined),
+                title: const Text('Send'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _shareNote(note);
+                },
+              ),
+            ],
           ),
         );
       },
@@ -589,6 +567,19 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
           // Add Item Button
           InkWell(
             onTap: () {
+               final lines = _contentController.text.isEmpty ? <String>[] : _contentController.text.split('\n');
+               
+               // We need to insert before the first checked item, OR at the end if no checked items.
+               // But wait, our text structure is just lines.
+               // The UI reorders them.
+               // To keep things simple, we can just append '[ ] ' to the end.
+               // Since it is unchecked, it will appear in Active list (at end).
+               // If there are checked items, they are typically physically at the bottom of the string if we sort them.
+               // But if the user mixed them `[ ] a \n [x] b \n [ ] c`, our UI sorts them.
+               // If we append `[ ] d`, it becomes `... \n [ ] d`.
+               // In UI: `a, c, d` (Active), `b` (Checked).
+               // This works.
+               
                final newText = _contentController.text + (_contentController.text.isEmpty ? '' : '\n') + '[ ] ';
                _contentController.text = newText;
                setState(() {});
@@ -816,18 +807,14 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   child: const Icon(Icons.arrow_upward, size: 28),
                 )
               : null,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-          extendBody: true,
-          bottomNavigationBar: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: BottomAppBar(
-                color: backgroundColor.withValues(alpha: 0.8),
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          bottomNavigationBar: BottomAppBar(
+            color: backgroundColor,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Row(
                   children: [
                     IconButton(
@@ -858,8 +845,6 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                 ),
               ],
             ),
-          ),
-          ),
           ),
           ),
         );

@@ -86,12 +86,6 @@ class AppTheme {
         onSurface: Colors.black,
         outline: const Color(0xFF747775),
       ),
-      pageTransitionsTheme: const PageTransitionsTheme(
-        builders: {
-          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        },
-      ),
       appBarTheme: AppBarTheme(
         backgroundColor: const Color(0xFFF5F5F5),
         foregroundColor: Colors.black,
@@ -193,12 +187,6 @@ class AppTheme {
         onSecondary: Colors.black,
         onSurface: Colors.white,
         outline: const Color(0xFF5F6368),
-      ),
-      pageTransitionsTheme: const PageTransitionsTheme(
-        builders: {
-          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        },
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.black, // Match Scaffold

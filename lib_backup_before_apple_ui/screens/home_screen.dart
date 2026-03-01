@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -585,52 +584,42 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showColorPickerDialog(NotesProvider provider) {
     // Safe copy of ids in case selection changes
     final idsToColor = Set<String>.from(_selectedNoteIds); 
-    showCupertinoDialog(
+    showDialog(
       context: context,
-      builder: (ctx) => CupertinoAlertDialog(
+      builder: (ctx) => AlertDialog(
         title: const Text('Change Color'),
         content: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Material(
-            color: Colors.transparent,
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 12,
-              runSpacing: 12,
-              children: List.generate(7, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    for (final id in idsToColor) {
-                      provider.updateNote(id, colorIndex: index);
-                    }
-                    Navigator.pop(ctx);
-                    _clearSelection();
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppTheme.getCardColor(index),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).brightness == Brightness.dark && index == 0
-                             ? Colors.white24 
-                             : Colors.transparent,
-                        width: 2,
-                      ),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: List.generate(7, (index) {
+              return GestureDetector(
+                onTap: () {
+                  for (final id in idsToColor) {
+                    provider.updateNote(id, colorIndex: index);
+                  }
+                  Navigator.pop(ctx);
+                  _clearSelection();
+                },
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: AppTheme.getCardColor(index),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Theme.of(context).brightness == Brightness.dark && index == 0
+                           ? Colors.white24 
+                           : Colors.transparent,
+                      width: 2,
                     ),
                   ),
-                );
-              }),
-            ),
+                ),
+              );
+            }),
           ),
         ),
-        actions: [
-          CupertinoDialogAction(
-            child: const Text('Cancel'),
-            onPressed: () => Navigator.pop(ctx),
-          ),
-        ],
       ),
     );
   }
