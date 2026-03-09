@@ -24,7 +24,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSearching = false;
-  bool _isSearchExpanded = false;
   final _searchController = TextEditingController();
   final Set<String> _selectedNoteIds = {};
 
@@ -368,132 +367,61 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSearchBar(NotesProvider provider) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (!_isSearchExpanded)
-            _buildLiquidCircleButton(Icons.person, isDark, () {
-              _scaffoldKey.currentState?.openDrawer();
-            }),
-          if (!_isSearchExpanded) const Spacer(),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 350),
-            curve: Curves.fastOutSlowIn,
-            height: 56,
-            width: _isSearchExpanded ? MediaQuery.of(context).size.width - 32 : 56,
-            child: _isSearchExpanded
-                ? _buildLiquidSearchPill(provider, isDark)
-                : _buildLiquidCircleButton(Icons.search, isDark, () {
-                    setState(() {
-                      _isSearchExpanded = true;
-                    });
-                  }),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildLiquidCircleButton(IconData icon, bool isDark, VoidCallback onTap) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(28),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          height: 56,
-          width: 56,
-          decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
-              width: 0.5,
-            ),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(28),
-              child: Center(
-                child: Icon(icon, color: isDark ? Colors.white : Colors.black, size: 26),
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(
+                hintText: 'Search your notes',
+                border: InputBorder.none,
               ),
+              onChanged: (q) {
+                setState(() {
+                  _isSearching = q.isNotEmpty;
+                });
+                provider.setSearchQuery(q);
+              },
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLiquidSearchPill(NotesProvider provider, bool isDark) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(28),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(28),
-            border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
-              width: 0.5,
+          if (_isSearching)
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  _isSearching = false;
+                  _searchController.clear();
+                  provider.setSearchQuery('');
+                });
+              },
+            )
+          else
+            const CircleAvatar(
+              radius: 16,
+              backgroundColor: Colors.transparent, // Placeholder for profile
+              child: Icon(Icons.account_circle, color: Colors.grey),
             ),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: Row(
-              children: [
-                const SizedBox(width: 16),
-                Icon(Icons.search, color: isDark ? Colors.white70 : Colors.black54),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    autofocus: true,
-                    style: TextStyle(color: isDark ? Colors.white : Colors.black),
-                    decoration: InputDecoration(
-                      hintText: 'Search your notes...',
-                      hintStyle: TextStyle(color: isDark ? Colors.white54 : Colors.black38),
-                      border: InputBorder.none,
-                    ),
-                    onChanged: (q) {
-                      setState(() {
-                        _isSearching = q.isNotEmpty;
-                      });
-                      provider.setSearchQuery(q);
-                    },
-                  ),
-                ),
-                if (_isSearching)
-                  IconButton(
-                    icon: Icon(Icons.close, color: isDark ? Colors.white : Colors.black),
-                    onPressed: () {
-                      setState(() {
-                        _isSearching = false;
-                        _searchController.clear();
-                        provider.setSearchQuery('');
-                      });
-                    },
-                  ),
-                IconButton(
-                  icon: Icon(Icons.cancel, color: isDark ? Colors.white70 : Colors.black54),
-                  onPressed: () {
-                    setState(() {
-                      _isSearchExpanded = false;
-                      _isSearching = false;
-                      _searchController.clear();
-                      provider.setSearchQuery('');
-                    });
-                  },
-                ),
-                const SizedBox(width: 4),
-              ],
-            ),
-          ),
-        ),
+        ],
       ),
     );
   }
