@@ -11,7 +11,6 @@ import 'drawing_screen.dart';
 import 'bin_screen.dart';
 import 'archive_screen.dart';
 import '../theme/app_theme.dart';
-import 'dart:ui';
 
 export '../models/note.dart';
 
@@ -169,7 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         return Scaffold(
           key: _scaffoldKey,
-          extendBody: true,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           drawer: Drawer(
             child: ListView(
@@ -286,18 +284,95 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          bottomNavigationBar: SafeArea(
-            bottom: true,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildLiquidFAB(isDark),
-                  const SizedBox(height: 16),
-                  _buildLiquidTray(isDark),
-                ],
-              ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _createNote,
+            elevation: 4,
+            backgroundColor: const Color(0xFF2B2B2B), // Dark Grey like screenshot
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), // Rounded Square
+            child: const Icon(Icons.add, size: 32, color: Colors.white),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            color: Colors.transparent,
+            elevation: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.check_box, color: Colors.grey),
+                  onPressed: () {
+                    final provider = Provider.of<NotesProvider>(context, listen: false);
+                    final id = provider.addNote(isList: true);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => NoteEditorScreen(noteId: id),
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.brush, color: Colors.grey),
+                  onPressed: () async {
+                    // Open Drawing Screen
+                    final imagePath = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const DrawingScreen()),
+                    );
+
+                    if (imagePath != null && context.mounted) {
+                      // Create note with image
+                      final provider = Provider.of<NotesProvider>(context, listen: false);
+                      final id = provider.addNote();
+                      provider.updateNote(id, images: [imagePath]);
+                      
+                      // Open Editor
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => NoteEditorScreen(noteId: id),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(width: 48), // Space for FAB
+                IconButton(
+                  icon: const Icon(Icons.image, color: Colors.grey),
+                  onPressed: () async {
+                    // Pick Image
+                    final picker = ImagePicker();
+                    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+                    if (image != null && context.mounted) {
+                      final provider = Provider.of<NotesProvider>(context, listen: false);
+                      final id = provider.addNote();
+                      provider.updateNote(id, images: [image.path]);
+                      
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => NoteEditorScreen(noteId: id),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.mic, color: Colors.grey),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Voice Notes coming soon! 🎙️'),
+                        duration: Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         );
@@ -557,118 +632,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildLiquidFAB(bool isDark) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
-              width: 1.5,
-            ),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: _createNote,
-              borderRadius: BorderRadius.circular(20),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Icon(
-                  Icons.add,
-                  size: 28,
-                  color: isDark ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLiquidTray(bool isDark) {
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 400),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: Container(
-                height: 56,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                    color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
-                    width: 1.5,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                _buildTrayIcon(Icons.check_box, isDark, () {
-                  final provider = Provider.of<NotesProvider>(context, listen: false);
-                  final id = provider.addNote(isList: true);
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => NoteEditorScreen(noteId: id)));
-                }),
-                _buildTrayIcon(Icons.brush, isDark, () async {
-                  final imagePath = await Navigator.push(context, MaterialPageRoute(builder: (_) => const DrawingScreen()));
-                  if (imagePath != null && context.mounted) {
-                    final provider = Provider.of<NotesProvider>(context, listen: false);
-                    final id = provider.addNote();
-                    provider.updateNote(id, images: [imagePath]);
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => NoteEditorScreen(noteId: id)));
-                  }
-                }),
-                _buildTrayIcon(Icons.image, isDark, () async {
-                  final picker = ImagePicker();
-                  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                  if (image != null && context.mounted) {
-                    final provider = Provider.of<NotesProvider>(context, listen: false);
-                    final id = provider.addNote();
-                    provider.updateNote(id, images: [image.path]);
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => NoteEditorScreen(noteId: id)));
-                  }
-                }),
-                _buildTrayIcon(Icons.mic, isDark, () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Voice Notes coming soon! 🎙️'), duration: Duration(seconds: 1), behavior: SnackBarBehavior.floating));
-                }),
-              ],
-            ),
-          ),
-        ),
-      ),
-     ),
-    ),
-   );
-  }
-
-  Widget _buildTrayIcon(IconData icon, bool isDark, VoidCallback onTap) {
-    return IconButton(
-      icon: Icon(icon, color: isDark ? Colors.white : Colors.black, size: 24),
-      onPressed: onTap,
     );
   }
 }
