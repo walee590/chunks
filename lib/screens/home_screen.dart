@@ -235,28 +235,34 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               SafeArea(
                 bottom: false,
-                child: Column(
-              children: [
-                // Custom Search Bar or Selection Bar
-                if (_isSelectionMode)
-                  _buildSelectionAppBar(provider)
-                else
-                  _buildSearchBar(provider),
-
-                // Content
-                Expanded(
-                  child: !hasNotes
-                      ? _buildEmptyState()
-                      : SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (pinnedNotes.isNotEmpty) ...[
+                child: !hasNotes
+                    ? _buildEmptyState()
+                    : SingleChildScrollView(
+                        padding: const EdgeInsets.only(left: 12, right: 12, top: 80, bottom: 160),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (pinnedNotes.isNotEmpty) ...[
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12, top: 12, bottom: 8),
+                                child: Text(
+                                  'PINNED',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[400],
+                                  ),
+                                ),
+                              ),
+                              _buildGrid(pinnedNotes, provider),
+                              const SizedBox(height: 16),
+                            ],
+                            if (unpinnedNotes.isNotEmpty) ...[
+                              if (pinnedNotes.isNotEmpty)
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12, top: 12, bottom: 8),
+                                  padding: const EdgeInsets.only(left: 12, bottom: 8),
                                   child: Text(
-                                    'PINNED',
+                                    'OTHERS',
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
@@ -264,32 +270,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
-                                _buildGrid(pinnedNotes, provider),
-                                const SizedBox(height: 16),
-                              ],
-                              if (unpinnedNotes.isNotEmpty) ...[
-                                if (pinnedNotes.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12, bottom: 8),
-                                    child: Text(
-                                      'OTHERS',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey[400],
-                                      ),
-                                    ),
-                                  ),
-                                _buildGrid(unpinnedNotes, provider),
-                              ],
-                              const SizedBox(height: 160),
+                              _buildGrid(unpinnedNotes, provider),
                             ],
-                          ),
+                          ],
                         ),
+                      ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: SafeArea(
+                  bottom: false,
+                  child: _isSelectionMode
+                      ? _buildSelectionAppBar(provider)
+                      : _buildSearchBar(provider),
                 ),
-              ],
-            ),
-          ),
+              ),
           Positioned(
             left: 0,
             right: 0,
@@ -401,15 +398,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(28),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
         child: Container(
           height: 56,
           width: 56,
           decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
+            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
             shape: BoxShape.circle,
             border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
+              color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
               width: 0.5,
             ),
           ),
@@ -432,13 +429,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(28),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
         child: Container(
           decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
+            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(28),
             border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
+              color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
               width: 0.5,
             ),
           ),
@@ -642,13 +639,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
         child: Container(
           decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
+            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
+              color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
               width: 0.5,
             ),
           ),
@@ -682,24 +679,24 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: 0.15),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
             ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
               child: Container(
                 height: 56,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
+                  color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(
-                    color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1),
+                    color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
                     width: 0.5,
                   ),
                 ),
