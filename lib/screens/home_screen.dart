@@ -398,6 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required Widget child,
     required double borderRadius,
     required bool isDark,
+    double opacityScale = 1.0,
   }) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
@@ -411,18 +412,17 @@ class _HomeScreenState extends State<HomeScreen> {
               color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
               width: 0.5,
             ),
-            // The magic gradient fill that creates the volume
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: isDark
                   ? [
-                      Colors.white.withValues(alpha: 0.2),
-                      Colors.white.withValues(alpha: 0.02), // Fades to almost pure glass
+                      Colors.white.withValues(alpha: 0.2 * opacityScale),
+                      Colors.white.withValues(alpha: 0.02 * opacityScale), // Fades to almost pure glass
                     ]
                   : [
-                      Colors.white.withValues(alpha: 0.6),
-                      Colors.white.withValues(alpha: 0.1),
+                      Colors.white.withValues(alpha: 0.6 * opacityScale),
+                      Colors.white.withValues(alpha: 0.1 * opacityScale),
                     ],
             ),
           ),
@@ -676,9 +676,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildLiquidTray(bool isDark) {
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 400),
+        constraints: const BoxConstraints(maxWidth: 500),
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
+          margin: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
@@ -692,6 +692,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: _buildGlassContainer(
             borderRadius: 30,
             isDark: isDark,
+            opacityScale: 0.4, // Making the tray much more sheer
             child: Container(
               height: 56,
               padding: const EdgeInsets.symmetric(horizontal: 16),
