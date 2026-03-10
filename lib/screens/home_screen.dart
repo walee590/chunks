@@ -394,30 +394,58 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildLiquidCircleButton(IconData icon, bool isDark, VoidCallback onTap) {
+  Widget _buildGlassContainer({
+    required Widget child,
+    required double borderRadius,
+    required bool isDark,
+  }) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(28),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+        filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
         child: Container(
-          height: 56,
-          width: 56,
           decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
+              // Apple's signature rim light
               color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
               width: 0.5,
             ),
+            // The magic gradient fill that creates the volume
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isDark
+                  ? [
+                      Colors.white.withValues(alpha: 0.2),
+                      Colors.white.withValues(alpha: 0.02), // Fades to almost pure glass
+                    ]
+                  : [
+                      Colors.white.withValues(alpha: 0.6),
+                      Colors.white.withValues(alpha: 0.1),
+                    ],
+            ),
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(28),
-              child: Center(
-                child: Icon(icon, color: isDark ? Colors.white : Colors.black, size: 26),
-              ),
+          child: child,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiquidCircleButton(IconData icon, bool isDark, VoidCallback onTap) {
+    return _buildGlassContainer(
+      borderRadius: 28,
+      isDark: isDark,
+      child: SizedBox(
+        height: 56,
+        width: 56,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(28),
+            child: Center(
+              child: Icon(icon, color: isDark ? Colors.white : Colors.black, size: 26),
             ),
           ),
         ),
@@ -426,25 +454,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildLiquidSearchPill(NotesProvider provider, bool isDark) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(28),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(28),
-            border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
-              width: 0.5,
-            ),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: Row(
-              children: [
-                const SizedBox(width: 16),
-                Icon(Icons.search, color: isDark ? Colors.white70 : Colors.black54),
+    return _buildGlassContainer(
+      borderRadius: 28,
+      isDark: isDark,
+      child: Material(
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            const SizedBox(width: 16),
+            Icon(Icons.search, color: isDark ? Colors.white70 : Colors.black54),
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
@@ -636,22 +654,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildLiquidFAB(bool isDark) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
-              width: 0.5,
-            ),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
+    return _buildGlassContainer(
+      borderRadius: 20,
+      isDark: isDark,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
               onTap: _createNote,
               borderRadius: BorderRadius.circular(20),
               child: Padding(
@@ -685,22 +693,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-              child: Container(
-                height: 56,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                    color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
-                    width: 0.5,
-                  ),
-                ),
-                child: Row(
+          child: _buildGlassContainer(
+            borderRadius: 30,
+            isDark: isDark,
+            child: Container(
+              height: 56,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                 _buildTrayIcon(Icons.check_box, isDark, () {
