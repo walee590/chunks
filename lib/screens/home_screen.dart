@@ -436,6 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return _buildGlassContainer(
       borderRadius: 28,
       isDark: isDark,
+      opacityScale: 0.4,
       child: SizedBox(
         height: 56,
         width: 56,
@@ -457,6 +458,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return _buildGlassContainer(
       borderRadius: 28,
       isDark: isDark,
+      opacityScale: 0.4,
       child: Material(
         color: Colors.transparent,
         child: Row(
