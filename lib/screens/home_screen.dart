@@ -660,16 +660,14 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-              onTap: _createNote,
-              borderRadius: BorderRadius.circular(20),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Icon(
-                  Icons.add,
-                  size: 28,
-                  color: isDark ? Colors.white : Colors.black,
-                ),
-              ),
+          onTap: _createNote,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Icon(
+              Icons.add,
+              size: 28,
+              color: isDark ? Colors.white : Colors.black,
             ),
           ),
         ),
@@ -734,10 +732,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-     ),
     ),
-   );
-  }
+  );
+}
 
   Widget _buildTrayIcon(IconData icon, bool isDark, VoidCallback onTap) {
     return IconButton(
