@@ -38,14 +38,13 @@ class NoteCard extends StatelessWidget {
         
     final accentColor = AppTheme.getAccentColor(note.colorIndex);
     
-    // If card has color (index > 0), it's now Vibrant/Pastel even in Dark Mode.
-    // So we need BLACK text for contrast, unless it's the Default Grey (index 0).
+    // If card has color (index > 0), the user requested WHITE text for the vibrant CMYK colors.
     final bool isColorful = note.colorIndex > 0;
     
-    // Text colors tailored for the background
-    final titleColor = (isDark && !isColorful) ? Colors.white : Colors.black;
+    // Text colors tailored for the CMYK vibrant background
+    final titleColor = isColorful ? Colors.white : (isDark ? Colors.white : Colors.black);
     // Make content fully opaque for maximum richness
-    final contentColor = (isDark && !isColorful) ? Colors.white : Colors.black.withValues(alpha: 0.85);
+    final contentColor = isColorful ? Colors.white : (isDark ? Colors.white : Colors.black.withValues(alpha: 0.85));
     final borderColor = (isDark && !isColorful) ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.1);
 
     return GestureDetector(
@@ -161,7 +160,7 @@ class NoteCard extends StatelessWidget {
                               width: 6.5,
                               height: 6.5,
                               decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.7), // Slightly darker for pop
+                                color: Colors.white.withValues(alpha: 0.8), // White bullet for contrast
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -173,7 +172,7 @@ class NoteCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                    fontSize: 11,
-                                   color: Colors.black.withValues(alpha: 0.8),
+                                   color: Colors.white,
                                    fontWeight: FontWeight.w600,
                                    height: 1.2,
                                    decoration: isChecked ? TextDecoration.lineThrough : null,
