@@ -75,7 +75,7 @@ class NoteCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(10), // Slimmer padding for a compact aesthetic
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -96,7 +96,7 @@ class NoteCard extends StatelessWidget {
                       child: Text(
                         note.title,
                         style: TextStyle(
-                          fontSize: 18, 
+                          fontSize: 15, // Reduced from 18 for a tighter look
                           fontWeight: FontWeight.w500, // Reduced from w600 for cleaner look
                           color: titleColor,
                           height: 1.3,
@@ -189,8 +189,8 @@ class NoteCard extends StatelessWidget {
                     note.content,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: contentColor,
-                      height: 1.5,
-                      fontSize: 18, 
+                      height: 1.4, // Tighter line height
+                      fontSize: 14, // Reduced from 18 to make UI less bulky
                     ),
                     maxLines: 6,
                     overflow: TextOverflow.ellipsis,
