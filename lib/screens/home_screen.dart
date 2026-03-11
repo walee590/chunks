@@ -732,9 +732,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildTrayIcon(IconData icon, bool isDark, VoidCallback onTap) {
     return IconButton(
