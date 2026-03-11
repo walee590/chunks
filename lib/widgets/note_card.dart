@@ -96,7 +96,7 @@ class NoteCard extends StatelessWidget {
                       child: Text(
                         note.title,
                         style: TextStyle(
-                          fontSize: 16, // Perfect sweet spot for titles
+                          fontSize: 17, // Upped slightly
                           fontWeight: FontWeight.w600, // Restored w600 for sharp legibility
                           color: titleColor,
                           height: 1.3,
@@ -190,7 +190,7 @@ class NoteCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: contentColor,
                       height: 1.45, 
-                      fontSize: 15, // Perfect sweet spot for body text
+                      fontSize: 16, // Upped slightly
                     ),
                     maxLines: 6,
                     overflow: TextOverflow.ellipsis,
