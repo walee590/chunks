@@ -399,7 +399,6 @@ class _HomeScreenState extends State<HomeScreen> {
     required Widget child,
     required double borderRadius,
     required bool isDark,
-    double opacityScale = 1.0,
   }) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
@@ -409,7 +408,6 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
-              // Apple's signature rim light
               color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
               width: 0.5,
             ),
@@ -418,12 +416,12 @@ class _HomeScreenState extends State<HomeScreen> {
               end: Alignment.bottomRight,
               colors: isDark
                   ? [
-                      Colors.white.withValues(alpha: 0.2 * opacityScale),
-                      Colors.white.withValues(alpha: 0.02 * opacityScale), // Fades to almost pure glass
+                      Colors.white.withValues(alpha: 0.10), // Exactly 10%
+                      Colors.white.withValues(alpha: 0.05), // Fades slightly to 5%
                     ]
                   : [
-                      Colors.white.withValues(alpha: 0.6 * opacityScale),
-                      Colors.white.withValues(alpha: 0.1 * opacityScale),
+                      Colors.white.withValues(alpha: 0.40),
+                      Colors.white.withValues(alpha: 0.10),
                     ],
             ),
           ),
