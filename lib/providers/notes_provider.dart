@@ -91,8 +91,8 @@ class NotesProvider extends ChangeNotifier {
   // Add a new note
   String addNote({String? parentId, String title = '', String content = '', int? colorIndex, bool isList = false}) {
     final id = _uuid.v4();
-    // Random color (1-12) for nested notes, default (0) for root notes
-    final int effectiveColorIndex = colorIndex ?? (parentId != null ? (Random().nextInt(12) + 1) : 0);
+    // Random color (1-8) for nested notes, default (0) for root notes
+    final int effectiveColorIndex = colorIndex ?? (parentId != null ? (Random().nextInt(8) + 1) : 0);
 
     final note = Note(
       id: id,

@@ -5,66 +5,50 @@ class AppTheme {
   // 12 Vibrant CMYK Colors + 1 Default
   static const List<Color> noteColors = [
     Color(0xFF202124), // 0 - Default dark
-    Color(0xFFFFEB3B), // 1 - Yellow
-    Color(0xFFCDDC39), // 2 - Lime
-    Color(0xFF4CAF50), // 3 - Green
-    Color(0xFF009688), // 4 - Teal
-    Color(0xFF00BCD4), // 5 - Cyan
-    Color(0xFF03A9F4), // 6 - Sky Blue
-    Color(0xFF3F51B5), // 7 - Deep Blue
-    Color(0xFF9C27B0), // 8 - Purple
-    Color(0xFFE91E63), // 9 - Magenta
-    Color(0xFFF06292), // 10 - Pink
-    Color(0xFFF44336), // 11 - Red
-    Color(0xFFFF9800), // 12 - Orange
+    Color(0xFFD32F2F), // 1 - Deep Red
+    Color(0xFFC2185B), // 2 - Magenta / Deep Pink
+    Color(0xFF7B1FA2), // 3 - Purple
+    Color(0xFF512DA8), // 4 - Deep Purple
+    Color(0xFF303F9F), // 5 - Indigo
+    Color(0xFF1976D2), // 6 - Deep Blue
+    Color(0xFF00796B), // 7 - Dark Teal
+    Color(0xFF388E3C), // 8 - Forest Green
   ];
 
   static const List<Color> noteAccentColors = [
     Color(0xFF5F6368), // 0 - Default accent
-    Color(0xFFFFEB3B), // 1 - Yellow
-    Color(0xFFCDDC39), // 2 - Lime
-    Color(0xFF4CAF50), // 3 - Green
-    Color(0xFF009688), // 4 - Teal
-    Color(0xFF00BCD4), // 5 - Cyan
-    Color(0xFF03A9F4), // 6 - Sky Blue
-    Color(0xFF3F51B5), // 7 - Deep Blue
-    Color(0xFF9C27B0), // 8 - Purple
-    Color(0xFFE91E63), // 9 - Magenta
-    Color(0xFFF06292), // 10 - Pink
-    Color(0xFFF44336), // 11 - Red
-    Color(0xFFFF9800), // 12 - Orange
+    Color(0xFFD32F2F), // 1 - Deep Red
+    Color(0xFFC2185B), // 2 - Magenta / Deep Pink
+    Color(0xFF7B1FA2), // 3 - Purple
+    Color(0xFF512DA8), // 4 - Deep Purple
+    Color(0xFF303F9F), // 5 - Indigo
+    Color(0xFF1976D2), // 6 - Deep Blue
+    Color(0xFF00796B), // 7 - Dark Teal
+    Color(0xFF388E3C), // 8 - Forest Green
   ];
 
   static const List<String> colorNames = [
     'Default',
-    'Yellow',
-    'Lime',
-    'Green',
-    'Teal',
-    'Cyan',
-    'Sky Blue',
-    'Deep Blue',
-    'Purple',
+    'Deep Red',
     'Magenta',
-    'Pink',
-    'Red',
-    'Orange',
+    'Purple',
+    'Deep Purple',
+    'Indigo',
+    'Deep Blue',
+    'Dark Teal',
+    'Forest Green',
   ];
 
   static const List<Color> cardColors = [
     Color(0xFF1C1C1E), // 0 - Default card (Dark Grey)
-    Color(0xFFFFEB3B), // 1 - Yellow
-    Color(0xFFCDDC39), // 2 - Lime
-    Color(0xFF4CAF50), // 3 - Green
-    Color(0xFF009688), // 4 - Teal
-    Color(0xFF00BCD4), // 5 - Cyan
-    Color(0xFF03A9F4), // 6 - Sky Blue
-    Color(0xFF3F51B5), // 7 - Deep Blue
-    Color(0xFF9C27B0), // 8 - Purple
-    Color(0xFFE91E63), // 9 - Magenta
-    Color(0xFFF06292), // 10 - Pink
-    Color(0xFFF44336), // 11 - Red
-    Color(0xFFFF9800), // 12 - Orange
+    Color(0xFFD32F2F), // 1 - Deep Red
+    Color(0xFFC2185B), // 2 - Magenta / Deep Pink
+    Color(0xFF7B1FA2), // 3 - Purple
+    Color(0xFF512DA8), // 4 - Deep Purple
+    Color(0xFF303F9F), // 5 - Indigo
+    Color(0xFF1976D2), // 6 - Deep Blue
+    Color(0xFF00796B), // 7 - Dark Teal
+    Color(0xFF388E3C), // 8 - Forest Green
   ];
 
   static Color getCardColor(int index) {
@@ -81,18 +65,14 @@ class AppTheme {
 
   static const List<Color> lightCardColors = [
     Colors.white, // 0 - Default
-    Color(0xFFFFF9C4), // 1 - Light Yellow
-    Color(0xFFF0F4C3), // 2 - Light Lime
-    Color(0xFFC8E6C9), // 3 - Light Green
-    Color(0xFFB2DFDB), // 4 - Light Teal
-    Color(0xFFB2EBF2), // 5 - Light Cyan
-    Color(0xFFB3E5FC), // 6 - Light Sky Blue
-    Color(0xFFC5CAE9), // 7 - Light Deep Blue
-    Color(0xFFE1BEE7), // 8 - Light Purple
-    Color(0xFFF8BBD0), // 9 - Light Magenta
-    Color(0xFFFCE4EC), // 10 - Light Pink
-    Color(0xFFFFCDD2), // 11 - Light Red
-    Color(0xFFFFE0B2), // 12 - Light Orange
+    Color(0xFFFFCDD2), // 1 - Light Red
+    Color(0xFFF8BBD0), // 2 - Light Magenta
+    Color(0xFFE1BEE7), // 3 - Light Purple
+    Color(0xFFD1C4E9), // 4 - Light Deep Purple
+    Color(0xFFC5CAE9), // 5 - Light Indigo
+    Color(0xFFBBDEFB), // 6 - Light Blue
+    Color(0xFFB2DFDB), // 7 - Light Teal
+    Color(0xFFC8E6C9), // 8 - Light Green
   ];
 
   static Color getLightCardColor(int index) {
