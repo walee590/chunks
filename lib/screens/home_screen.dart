@@ -396,44 +396,33 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildGlassContainer({
+  Widget _buildSolidContainer({
     required Widget child,
     required double borderRadius,
     required bool isDark,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.white.withValues(alpha: 0.6),
-              width: 0.5,
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: isDark
-                  ? [
-                      Colors.white.withValues(alpha: 0.10), // Exactly 10%
-                      Colors.white.withValues(alpha: 0.05), // Fades slightly to 5%
-                    ]
-                  : [
-                      Colors.white.withValues(alpha: 0.40),
-                      Colors.white.withValues(alpha: 0.10),
-                    ],
-            ),
-          ),
-          child: child,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+        color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
+        border: Border.all(
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
+          width: 0.5,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
+      child: child,
     );
   }
 
   Widget _buildLiquidCircleButton(IconData icon, bool isDark, VoidCallback onTap) {
-    return _buildGlassContainer(
+    return _buildSolidContainer(
       borderRadius: 28,
       isDark: isDark,
       child: SizedBox(
@@ -454,7 +443,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildLiquidSearchPill(NotesProvider provider, bool isDark) {
-    return _buildGlassContainer(
+    return _buildSolidContainer(
       borderRadius: 28,
       isDark: isDark,
       child: Material(
@@ -652,7 +641,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildLiquidFAB(bool isDark) {
-    return _buildGlassContainer(
+    return _buildSolidContainer(
       borderRadius: 20,
       isDark: isDark,
       child: Material(
