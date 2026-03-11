@@ -57,8 +57,8 @@ class NoteCard extends StatelessWidget {
           color: cardColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? Theme.of(context).colorScheme.primary : borderColor,
-            width: isSelected ? 3.0 : (isNeutral ? 1.0 : (note.pinned ? 1.0 : 0.5)), // Thinner border
+            color: isSelected ? Theme.of(context).colorScheme.primary : Colors.transparent,
+            width: isSelected ? 2 : 0,
           ),
           boxShadow: [
             // Bubbly Drop Shadow

@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 16,
+            bottom: 32,
             child: SafeArea(
               bottom: false,
               child: Column(
@@ -681,6 +681,11 @@ class _HomeScreenState extends State<HomeScreen> {
           margin: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
+            color: isDark ? const Color(0xFF1C1C1E) : Colors.white, // Completely solid, 0% transparency
+            border: Border.all(
+              color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
+              width: 0.5,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.15),
@@ -689,15 +694,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          child: _buildGlassContainer(
-            borderRadius: 30,
-            isDark: isDark,
-            child: Container(
-              height: 56,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+          child: Container(
+            height: 56,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                 _buildTrayIcon(Icons.check_box, isDark, () {
                   final provider = Provider.of<NotesProvider>(context, listen: false);
                   final id = provider.addNote(isList: true);

@@ -36,7 +36,7 @@ class AppTheme {
   // Card colors (lighter versions for card backgrounds in dark mode)
   // Tuned to be "Less Brighter" (More muted/elegant) as requested
   static const List<Color> cardColors = [
-    Color(0xFF383A3D), // 0 - Default card (Dark Grey)
+    Color(0xFF1C1C1E), // 0 - Default card (Dark Grey, matches Apple Notes dark mode)
     Color(0xFFF28B82), // 1 - Coral (Vibrant)
     Color(0xFF80CBC4), // 2 - Teal (Vibrant)
     Color(0xFFD7AEFB), // 3 - Lavender (Vibrant)
