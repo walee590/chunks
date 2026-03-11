@@ -818,11 +818,14 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
               : null,
           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           extendBody: true,
-          bottomNavigationBar: BottomAppBar(
-            color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF1C1C1E) : Colors.white,
-            elevation: 0,
-            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-            child: Row(
+          bottomNavigationBar: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: BottomAppBar(
+                color: backgroundColor.withValues(alpha: 0.8),
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                 Row(
@@ -856,11 +859,13 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
               ],
             ),
           ),
-        ),
-      );
-    },
-  );
-}
+          ),
+          ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class ChecklistItem extends StatefulWidget {

@@ -598,7 +598,7 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: WrapAlignment.center,
               spacing: 12,
               runSpacing: 12,
-              children: List.generate(AppTheme.cardColors.length, (index) {
+              children: List.generate(7, (index) {
                 return GestureDetector(
                   onTap: () {
                     for (final id in idsToColor) {

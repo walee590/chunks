@@ -2,69 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // 12 Vibrant CMYK Colors + 1 Default
+  // Google Keep-style note colors
   static const List<Color> noteColors = [
-    Color(0xFF202124), // 0 - Default dark
-    Color(0xFFFFEB3B), // 1 - Yellow
-    Color(0xFFCDDC39), // 2 - Lime
-    Color(0xFF4CAF50), // 3 - Green
-    Color(0xFF009688), // 4 - Teal
-    Color(0xFF00BCD4), // 5 - Cyan
-    Color(0xFF03A9F4), // 6 - Sky Blue
-    Color(0xFF3F51B5), // 7 - Deep Blue
-    Color(0xFF9C27B0), // 8 - Purple
-    Color(0xFFE91E63), // 9 - Magenta
-    Color(0xFFF06292), // 10 - Pink
-    Color(0xFFF44336), // 11 - Red
-    Color(0xFFFF9800), // 12 - Orange
+    Color(0xFF202124), // 0 - Default (dark)
+    Color(0xFF5C2B29), // 1 - Coral / Brown-red
+    Color(0xFF1E504A), // 2 - Teal
+    Color(0xFF42275E), // 3 - Lavender / Purple
+    Color(0xFF2D4A1E), // 4 - Mint / Green
+    Color(0xFF614A19), // 5 - Peach / Orange
+    Color(0xFF1A3A5C), // 6 - Sky / Blue
   ];
 
   static const List<Color> noteAccentColors = [
-    Color(0xFF5F6368), // 0 - Default accent
-    Color(0xFFFFEB3B), // 1 - Yellow
-    Color(0xFFCDDC39), // 2 - Lime
-    Color(0xFF4CAF50), // 3 - Green
-    Color(0xFF009688), // 4 - Teal
-    Color(0xFF00BCD4), // 5 - Cyan
-    Color(0xFF03A9F4), // 6 - Sky Blue
-    Color(0xFF3F51B5), // 7 - Deep Blue
-    Color(0xFF9C27B0), // 8 - Purple
-    Color(0xFFE91E63), // 9 - Magenta
-    Color(0xFFF06292), // 10 - Pink
-    Color(0xFFF44336), // 11 - Red
-    Color(0xFFFF9800), // 12 - Orange
+    Color(0xFF5F6368), // 0 - Default accent (Grey)
+    Color(0xFFF28B82), // 1 - Coral (Vibrant)
+    Color(0xFF80CBC4), // 2 - Teal (Vibrant)
+    Color(0xFFD7AEFB), // 3 - Lavender (Vibrant)
+    Color(0xFFCCFF90), // 4 - Mint (Vibrant)
+    Color(0xFFFDCFE8), // 5 - Peach (Vibrant)
+    Color(0xFF8AB4F8), // 6 - Sky (Vibrant)
   ];
 
   static const List<String> colorNames = [
     'Default',
-    'Yellow',
-    'Lime',
-    'Green',
+    'Coral',
     'Teal',
-    'Cyan',
-    'Sky Blue',
-    'Deep Blue',
-    'Purple',
-    'Magenta',
-    'Pink',
-    'Red',
-    'Orange',
+    'Lavender',
+    'Mint',
+    'Peach',
+    'Sky',
   ];
 
+  // Card colors (lighter versions for card backgrounds in dark mode)
+  // Tuned to be "Less Brighter" (More muted/elegant) as requested
   static const List<Color> cardColors = [
-    Color(0xFF1C1C1E), // 0 - Default card (Dark Grey)
-    Color(0xFFFFEB3B), // 1 - Yellow
-    Color(0xFFCDDC39), // 2 - Lime
-    Color(0xFF4CAF50), // 3 - Green
-    Color(0xFF009688), // 4 - Teal
-    Color(0xFF00BCD4), // 5 - Cyan
-    Color(0xFF03A9F4), // 6 - Sky Blue
-    Color(0xFF3F51B5), // 7 - Deep Blue
-    Color(0xFF9C27B0), // 8 - Purple
-    Color(0xFFE91E63), // 9 - Magenta
-    Color(0xFFF06292), // 10 - Pink
-    Color(0xFFF44336), // 11 - Red
-    Color(0xFFFF9800), // 12 - Orange
+    Color(0xFF1C1C1E), // 0 - Default card (Dark Grey, matches Apple Notes dark mode)
+    Color(0xFFF28B82), // 1 - Coral (Vibrant)
+    Color(0xFF80CBC4), // 2 - Teal (Vibrant)
+    Color(0xFFD7AEFB), // 3 - Lavender (Vibrant)
+    Color(0xFFCCFF90), // 4 - Mint (Vibrant)
+    Color(0xFFFDCFE8), // 5 - Peach (Vibrant)
+    Color(0xFF8AB4F8), // 6 - Sky (Vibrant)
   ];
 
   static Color getCardColor(int index) {
@@ -81,18 +59,12 @@ class AppTheme {
 
   static const List<Color> lightCardColors = [
     Colors.white, // 0 - Default
-    Color(0xFFFFF9C4), // 1 - Light Yellow
-    Color(0xFFF0F4C3), // 2 - Light Lime
-    Color(0xFFC8E6C9), // 3 - Light Green
-    Color(0xFFB2DFDB), // 4 - Light Teal
-    Color(0xFFB2EBF2), // 5 - Light Cyan
-    Color(0xFFB3E5FC), // 6 - Light Sky Blue
-    Color(0xFFC5CAE9), // 7 - Light Deep Blue
-    Color(0xFFE1BEE7), // 8 - Light Purple
-    Color(0xFFF8BBD0), // 9 - Light Magenta
-    Color(0xFFFCE4EC), // 10 - Light Pink
-    Color(0xFFFFCDD2), // 11 - Light Red
-    Color(0xFFFFE0B2), // 12 - Light Orange
+    Color(0xFFFFEBEE), // 1 - Light Coral
+    Color(0xFFE0F2F1), // 2 - Light Teal
+    Color(0xFFF3E5F5), // 3 - Light Lavender
+    Color(0xFFE8F5E9), // 4 - Light Mint
+    Color(0xFFFFF3E0), // 5 - Light Peach
+    Color(0xFFE3F2FD), // 6 - Light Sky
   ];
 
   static Color getLightCardColor(int index) {

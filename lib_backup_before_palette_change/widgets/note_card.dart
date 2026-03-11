@@ -255,9 +255,10 @@ class NoteCard extends StatelessWidget {
                         text,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
-                          color: Colors.white, 
+                          // Use Black text for better contrast on vibrant/light accent colors
+                          color: Colors.black.withValues(alpha: 0.8), 
                           fontWeight: FontWeight.w600, 
                           height: 1.2,
                         ),
