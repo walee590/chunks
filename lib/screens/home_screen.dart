@@ -292,6 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
             right: 0,
             bottom: 16,
             child: SafeArea(
+              bottom: false,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -436,7 +437,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return _buildGlassContainer(
       borderRadius: 28,
       isDark: isDark,
-      opacityScale: 0.4,
       child: SizedBox(
         height: 56,
         width: 56,
@@ -458,7 +458,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return _buildGlassContainer(
       borderRadius: 28,
       isDark: isDark,
-      opacityScale: 0.4,
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -694,7 +693,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: _buildGlassContainer(
             borderRadius: 30,
             isDark: isDark,
-            opacityScale: 0.4, // Making the tray much more sheer
             child: Container(
               height: 56,
               padding: const EdgeInsets.symmetric(horizontal: 16),
