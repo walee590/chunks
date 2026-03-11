@@ -232,6 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: Stack(
+            fit: StackFit.expand,
             children: [
               SafeArea(
                 bottom: false,
