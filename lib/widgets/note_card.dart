@@ -130,7 +130,7 @@ class NoteCard extends StatelessWidget {
 
                       // Cycle colors based on line hash or index
                       // We don't have index easily in map, so use hashcode
-                      int colorIndex = (text.hashCode % 8) + 1; // 1-8 are vibrant
+                      int colorIndex = (text.hashCode % 12) + 1; // 1-12 are vibrant
                       final color = AppTheme.getAccentColor(colorIndex);
 
                       return Container(

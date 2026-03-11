@@ -5,50 +5,66 @@ class AppTheme {
   // 12 Vibrant CMYK Colors + 1 Default
   static const List<Color> noteColors = [
     Color(0xFF202124), // 0 - Default dark
-    Color(0xFFD32F2F), // 1 - Deep Red
-    Color(0xFFC2185B), // 2 - Magenta / Deep Pink
-    Color(0xFF7B1FA2), // 3 - Purple
-    Color(0xFF512DA8), // 4 - Deep Purple
-    Color(0xFF303F9F), // 5 - Indigo
-    Color(0xFF1976D2), // 6 - Deep Blue
-    Color(0xFF00796B), // 7 - Dark Teal
-    Color(0xFF388E3C), // 8 - Forest Green
+    Color(0xFFD90429), // 1 - Crimson
+    Color(0xFFD84315), // 2 - Deep Orange
+    Color(0xFF4E342E), // 3 - Cocoa Mocha
+    Color(0xFF2E7D32), // 4 - Forest Green
+    Color(0xFF00695C), // 5 - Emerald Teal
+    Color(0xFF00838F), // 6 - Slate Cyan
+    Color(0xFF1565C0), // 7 - Royal Blue
+    Color(0xFF37474F), // 8 - Steel Charcoal
+    Color(0xFF3949AB), // 9 - Indigo
+    Color(0xFF4A148C), // 10 - Velvet Purple
+    Color(0xFF8E24AA), // 11 - Rich Purple
+    Color(0xFFC2185B), // 12 - Ruby Rose
   ];
 
   static const List<Color> noteAccentColors = [
     Color(0xFF5F6368), // 0 - Default accent
-    Color(0xFFD32F2F), // 1 - Deep Red
-    Color(0xFFC2185B), // 2 - Magenta / Deep Pink
-    Color(0xFF7B1FA2), // 3 - Purple
-    Color(0xFF512DA8), // 4 - Deep Purple
-    Color(0xFF303F9F), // 5 - Indigo
-    Color(0xFF1976D2), // 6 - Deep Blue
-    Color(0xFF00796B), // 7 - Dark Teal
-    Color(0xFF388E3C), // 8 - Forest Green
+    Color(0xFFD90429), // 1 - Crimson
+    Color(0xFFD84315), // 2 - Deep Orange
+    Color(0xFF4E342E), // 3 - Cocoa Mocha
+    Color(0xFF2E7D32), // 4 - Forest Green
+    Color(0xFF00695C), // 5 - Emerald Teal
+    Color(0xFF00838F), // 6 - Slate Cyan
+    Color(0xFF1565C0), // 7 - Royal Blue
+    Color(0xFF37474F), // 8 - Steel Charcoal
+    Color(0xFF3949AB), // 9 - Indigo
+    Color(0xFF4A148C), // 10 - Velvet Purple
+    Color(0xFF8E24AA), // 11 - Rich Purple
+    Color(0xFFC2185B), // 12 - Ruby Rose
   ];
 
   static const List<String> colorNames = [
     'Default',
-    'Deep Red',
-    'Magenta',
-    'Purple',
-    'Deep Purple',
-    'Indigo',
-    'Deep Blue',
-    'Dark Teal',
+    'Crimson',
+    'Deep Orange',
+    'Cocoa Mocha',
     'Forest Green',
+    'Emerald Teal',
+    'Slate Cyan',
+    'Royal Blue',
+    'Steel Charcoal',
+    'Indigo',
+    'Velvet Purple',
+    'Rich Purple',
+    'Ruby Rose',
   ];
 
   static const List<Color> cardColors = [
     Color(0xFF1C1C1E), // 0 - Default card (Dark Grey)
-    Color(0xFFD32F2F), // 1 - Deep Red
-    Color(0xFFC2185B), // 2 - Magenta / Deep Pink
-    Color(0xFF7B1FA2), // 3 - Purple
-    Color(0xFF512DA8), // 4 - Deep Purple
-    Color(0xFF303F9F), // 5 - Indigo
-    Color(0xFF1976D2), // 6 - Deep Blue
-    Color(0xFF00796B), // 7 - Dark Teal
-    Color(0xFF388E3C), // 8 - Forest Green
+    Color(0xFFD90429), // 1 - Crimson
+    Color(0xFFD84315), // 2 - Deep Orange
+    Color(0xFF4E342E), // 3 - Cocoa Mocha
+    Color(0xFF2E7D32), // 4 - Forest Green
+    Color(0xFF00695C), // 5 - Emerald Teal
+    Color(0xFF00838F), // 6 - Slate Cyan
+    Color(0xFF1565C0), // 7 - Royal Blue
+    Color(0xFF37474F), // 8 - Steel Charcoal
+    Color(0xFF3949AB), // 9 - Indigo
+    Color(0xFF4A148C), // 10 - Velvet Purple
+    Color(0xFF8E24AA), // 11 - Rich Purple
+    Color(0xFFC2185B), // 12 - Ruby Rose
   ];
 
   static Color getCardColor(int index) {
@@ -64,15 +80,19 @@ class AppTheme {
   }
 
   static const List<Color> lightCardColors = [
-    Colors.white, // 0 - Default
-    Color(0xFFFFCDD2), // 1 - Light Red
-    Color(0xFFF8BBD0), // 2 - Light Magenta
-    Color(0xFFE1BEE7), // 3 - Light Purple
-    Color(0xFFD1C4E9), // 4 - Light Deep Purple
-    Color(0xFFC5CAE9), // 5 - Light Indigo
-    Color(0xFFBBDEFB), // 6 - Light Blue
-    Color(0xFFB2DFDB), // 7 - Light Teal
-    Color(0xFFC8E6C9), // 8 - Light Green
+    Colors.white,      // 0 - Default
+    Color(0xFFD90429), // 1 - Crimson
+    Color(0xFFD84315), // 2 - Deep Orange
+    Color(0xFF4E342E), // 3 - Cocoa Mocha
+    Color(0xFF2E7D32), // 4 - Forest Green
+    Color(0xFF00695C), // 5 - Emerald Teal
+    Color(0xFF00838F), // 6 - Slate Cyan
+    Color(0xFF1565C0), // 7 - Royal Blue
+    Color(0xFF37474F), // 8 - Steel Charcoal
+    Color(0xFF3949AB), // 9 - Indigo
+    Color(0xFF4A148C), // 10 - Velvet Purple
+    Color(0xFF8E24AA), // 11 - Rich Purple
+    Color(0xFFC2185B), // 12 - Ruby Rose
   ];
 
   static Color getLightCardColor(int index) {
