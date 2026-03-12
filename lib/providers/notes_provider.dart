@@ -328,13 +328,14 @@ class NotesProvider extends ChangeNotifier {
   }
 
   // Set or clear a reminder
-  Future<void> updateReminder(String id, DateTime? reminderDate) async {
+  Future<void> updateReminder(String id, DateTime? reminderDate, {int? intervalHours}) async {
     final note = _notes[id];
     if (note == null) return;
 
     // ALWAYS save the reminder state first (UI must reflect user intent)
     _notes[id] = note.copyWith(
       reminderDate: reminderDate, 
+      reminderIntervalHours: intervalHours,
       clearReminderDate: reminderDate == null,
       updatedAt: DateTime.now()
     );
@@ -345,23 +346,39 @@ class NotesProvider extends ChangeNotifier {
     try {
       final notifService = NotificationService();
       // Deterministic 32-bit Hex identifier derived directly from the persistent UUID
-      final int notifId = int.parse(id.replaceAll('-', '').substring(0, 8), radix: 16) & 0x7FFFFFFF;
+      final int baseNotifId = int.parse(id.replaceAll('-', '').substring(0, 8), radix: 16) & 0x7FFFFFFF;
 
-      // Clear old OS notification if it existed
-      if (note.reminderDate != null) {
-        await notifService.cancelNotification(notifId);
+      // Clear the potential batch of 20 slots for this note before rescheduling
+      for (int i = 0; i < 20; i++) {
+        await notifService.cancelNotification(baseNotifId + i);
       }
 
-      // Schedule new OS notification
+      // Schedule new batch if date is valid
       if (reminderDate != null && reminderDate.isAfter(DateTime.now())) {
         final hasPermission = await notifService.requestPermissions();
-        if (hasPermission) {
-          await notifService.scheduleNotification(
-            id: notifId,
-            title: 'Chunk Reminder',
-            body: note.title.isNotEmpty ? note.title : 'You have a scheduled chunk.',
-            scheduledDate: reminderDate,
-          );
+        if (!hasPermission) return;
+
+        // Slot 0: The primary/immediate occurrence
+        await notifService.scheduleNotification(
+          id: baseNotifId,
+          title: 'Chunk Reminder',
+          body: note.title.isNotEmpty ? note.title : 'You have a scheduled chunk.',
+          scheduledDate: reminderDate,
+        );
+
+        // If recurring, schedule the next 14 slots (Total 15 slots)
+        if (intervalHours != null && intervalHours > 0) {
+          for (int i = 1; i < 15; i++) {
+            final futureDate = reminderDate.add(Duration(hours: intervalHours * i));
+            // Only schedule if it's within a reasonable future (e.g., next few months) 
+            // though with 15 occurrences of even the shortest interval (1h) that's fine.
+            await notifService.scheduleNotification(
+              id: baseNotifId + i,
+              title: 'Chunk Reminder (Recurring)',
+              body: note.title.isNotEmpty ? note.title : 'Recurring chunk reminder.',
+              scheduledDate: futureDate,
+            );
+          }
         }
       }
     } catch (e) {

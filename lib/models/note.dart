@@ -14,6 +14,7 @@ class Note {
   bool isList; // Checkbox mode
   List<String> images; // Paths to local image files
   DateTime? reminderDate; // When to send a notification
+  int? reminderIntervalHours; // Custom repeat cycle (1, 3, 4, 6, 12, 24)
   bool isDeleted; // Soft delete flag for Bin
   bool isArchived; // Hide from main view without deleting
   bool isGridView; // Persist layout preference for sub-notes
@@ -32,6 +33,7 @@ class Note {
     this.pinned = false,
     this.isList = false,
     this.reminderDate,
+    this.reminderIntervalHours,
     this.isDeleted = false,
     this.isArchived = false,
     this.isGridView = true,
@@ -52,6 +54,7 @@ class Note {
     bool? pinned,
     bool? isList,
     DateTime? reminderDate,
+    int? reminderIntervalHours,
     bool? isDeleted,
     bool? isArchived,
     bool? isGridView,
@@ -71,6 +74,7 @@ class Note {
       pinned: pinned ?? this.pinned,
       isList: isList ?? this.isList,
       reminderDate: clearReminderDate ? null : (reminderDate ?? this.reminderDate),
+      reminderIntervalHours: clearReminderDate ? null : (reminderIntervalHours ?? this.reminderIntervalHours),
       isDeleted: isDeleted ?? this.isDeleted,
       isArchived: isArchived ?? this.isArchived,
       isGridView: isGridView ?? this.isGridView,
@@ -92,6 +96,7 @@ class Note {
       'pinned': pinned,
       'isList': isList,
       'reminderDate': reminderDate?.toIso8601String(),
+      'reminderIntervalHours': reminderIntervalHours,
       'isDeleted': isDeleted,
       'isArchived': isArchived,
       'isGridView': isGridView,
@@ -127,6 +132,7 @@ class Note {
       reminderDate: json['reminderDate'] != null
           ? DateTime.parse(json['reminderDate'] as String)
           : null,
+      reminderIntervalHours: json['reminderIntervalHours'] as int?,
       isDeleted: json['isDeleted'] as bool? ?? false,
       isArchived: json['isArchived'] as bool? ?? false,
       isGridView: json['isGridView'] as bool? ?? true,
