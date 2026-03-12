@@ -52,18 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-    // Navigation
-    if (_openNoteId != null) {
-      final id = _openNoteId!;
-      _openNoteId = null;
-      Future.delayed(Duration.zero, () {
-        if (mounted) {
-           Navigator.push(context, CupertinoPageRoute(builder: (_) => NoteEditorScreen(noteId: id)));
-        }
-      });
-    }
-  }
-
   String? _openNoteId;
 
   void _openNote(Note note) {
@@ -80,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final id = provider.addNote();
     Navigator.push(
       context,
-      MaterialPageRoute(
+      CupertinoPageRoute(
         builder: (_) => NoteEditorScreen(noteId: id),
       ),
     );

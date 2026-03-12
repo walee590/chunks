@@ -867,10 +867,10 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             ),
             actions: [
               IconButton(
-                icon: Icon(_isGridMode ? Icons.grid_view : Icons.view_agenda_outlined),
-                tooltip: _isGridMode ? 'Switch to List' : 'Switch to Grid',
+                icon: Icon(note.isGridView ? Icons.grid_view : Icons.view_agenda_outlined),
+                tooltip: note.isGridView ? 'Switch to List' : 'Switch to Grid',
                 onPressed: () {
-                  setState(() => _isGridMode = !_isGridMode);
+                  provider.updateNote(widget.noteId, isGridView: !note.isGridView);
                 },
               ),
               IconButton(
@@ -984,23 +984,43 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                     if (children.isNotEmpty)
                       SliverPadding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        sliver: SliverMasonryGrid.count(
-                          crossAxisCount: _isGridMode ? 2 : 1,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          childCount: children.length,
-                          itemBuilder: (context, index) {
-                            final child = children[index];
-                            final grandchildren = provider.getNoteChildren(child.id);
-                            return NoteCard(
-                              note: child,
-                              childCount: child.childIds.length,
-                              subNotes: grandchildren,
-                              onTap: () => _openChildNote(child),
-                              onLongPress: () => _showNoteOptions(context, provider, child),
-                            );
-                          },
-                        ),
+                        sliver: note.isGridView
+                            ? SliverMasonryGrid.count(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                childCount: children.length,
+                                itemBuilder: (context, index) {
+                                  final child = children[index];
+                                  final grandchildren = provider.getNoteChildren(child.id);
+                                  return NoteCard(
+                                    note: child,
+                                    childCount: child.childIds.length,
+                                    subNotes: grandchildren,
+                                    onTap: () => _openChildNote(child),
+                                    onLongPress: () => _showNoteOptions(context, provider, child),
+                                  );
+                                },
+                              )
+                            : SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final child = children[index];
+                                    final grandchildren = provider.getNoteChildren(child.id);
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      child: NoteCard(
+                                        note: child,
+                                        childCount: child.childIds.length,
+                                        subNotes: grandchildren,
+                                        onTap: () => _openChildNote(child),
+                                        onLongPress: () => _showNoteOptions(context, provider, child),
+                                      ),
+                                    );
+                                  },
+                                  childCount: children.length,
+                                ),
+                              ),
                       ),
                     const SliverToBoxAdapter(child: SizedBox(height: 100)),
                   ],

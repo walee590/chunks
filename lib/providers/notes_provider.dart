@@ -155,10 +155,7 @@ class NotesProvider extends ChangeNotifier {
       final cur = queue.removeLast();
       final n = _notes[cur];
       if (n != null) {
-        if (n.reminderDate != null) {
-           notifService.cancelNotification(cur.hashCode & 0x7FFFFFFF);
-        }
-        _notes[cur] = n.copyWith(isDeleted: true, updatedAt: DateTime.now());
+        _notes[cur] = n.copyWith(isDeleted: true, clearReminderDate: true, updatedAt: DateTime.now());
         queue.addAll(n.childIds);
       }
     }
