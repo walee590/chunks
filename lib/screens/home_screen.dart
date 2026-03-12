@@ -52,27 +52,25 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+    // Navigation
+    if (_openNoteId != null) {
+      final id = _openNoteId!;
+      _openNoteId = null;
+      Future.delayed(Duration.zero, () {
+        if (mounted) {
+           Navigator.push(context, CupertinoPageRoute(builder: (_) => NoteEditorScreen(noteId: id)));
+        }
+      });
+    }
+  }
+
+  String? _openNoteId;
+
   void _openNote(Note note) {
     Navigator.push(
       context,
-      PageRouteBuilder(
-        pageBuilder: (_, animation, secondaryAnimation) => NoteEditorScreen(noteId: note.id),
-        transitionsBuilder: (_, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.05),
-                end: Offset.zero,
-              ).animate(CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOutCubic,
-              )),
-              child: child,
-            ),
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 300),
+      CupertinoPageRoute(
+        builder: (_) => NoteEditorScreen(noteId: note.id),
       ),
     );
   }

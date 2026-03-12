@@ -16,6 +16,7 @@ class Note {
   DateTime? reminderDate; // When to send a notification
   bool isDeleted; // Soft delete flag for Bin
   bool isArchived; // Hide from main view without deleting
+  bool isGridView; // Persist layout preference for sub-notes
 
   Note({
     required this.id,
@@ -33,6 +34,7 @@ class Note {
     this.reminderDate,
     this.isDeleted = false,
     this.isArchived = false,
+    this.isGridView = true,
   })  : childIds = childIds ?? [],
         childPreviews = childPreviews ?? {},
         images = images ?? [],
@@ -49,9 +51,9 @@ class Note {
     DateTime? updatedAt,
     bool? pinned,
     bool? isList,
-    DateTime? reminderDate,
     bool? isDeleted,
     bool? isArchived,
+    bool? isGridView,
     bool clearReminderDate = false,
   }) {
     return Note(
@@ -70,6 +72,7 @@ class Note {
       reminderDate: clearReminderDate ? null : (reminderDate ?? this.reminderDate),
       isDeleted: isDeleted ?? this.isDeleted,
       isArchived: isArchived ?? this.isArchived,
+      isGridView: isGridView ?? this.isGridView,
     );
   }
 
@@ -90,6 +93,7 @@ class Note {
       'reminderDate': reminderDate?.toIso8601String(),
       'isDeleted': isDeleted,
       'isArchived': isArchived,
+      'isGridView': isGridView,
     };
   }
 
@@ -124,6 +128,7 @@ class Note {
           : null,
       isDeleted: json['isDeleted'] as bool? ?? false,
       isArchived: json['isArchived'] as bool? ?? false,
+      isGridView: json['isGridView'] as bool? ?? true,
     );
   }
 }

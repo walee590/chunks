@@ -27,7 +27,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   bool _showColorPicker = false;
   bool _isRoot = false;
   bool _isList = false;
-  bool _isGridMode = true; // Default to Grid (Side-by-side)
+  // Local state removed: bool _isGridMode = true;
 
   @override
   void initState() {
@@ -118,18 +118,8 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     _saveNote();
     Navigator.push(
       context,
-      PageRouteBuilder(
-        pageBuilder: (_, animation, secondaryAnimation) => NoteEditorScreen(noteId: childNote.id),
-        transitionsBuilder: (_, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1, 0),
-              end: Offset.zero,
-            ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 300),
+      CupertinoPageRoute(
+        builder: (_) => NoteEditorScreen(noteId: childNote.id),
       ),
     );
   }

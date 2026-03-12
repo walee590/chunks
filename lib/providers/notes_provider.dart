@@ -123,7 +123,7 @@ class NotesProvider extends ChangeNotifier {
   }
 
   // Update a note
-  void updateNote(String id, {String? title, String? content, int? colorIndex, bool? pinned, bool? isList, List<String>? images}) {
+  void updateNote(String id, {String? title, String? content, int? colorIndex, bool? pinned, bool? isList, List<String>? images, bool? isGridView}) {
     final note = _notes[id];
     if (note == null) return;
 
@@ -134,6 +134,7 @@ class NotesProvider extends ChangeNotifier {
       pinned: pinned,
       isList: isList,
       images: images,
+      isGridView: isGridView,
       updatedAt: DateTime.now(),
     );
 
