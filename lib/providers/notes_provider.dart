@@ -334,33 +334,42 @@ class NotesProvider extends ChangeNotifier {
     final note = _notes[id];
     if (note == null) return;
 
-    final notifService = NotificationService();
-    final int notifId = id.hashCode & 0x7FFFFFFF;
-
-    // Clear old notification if it existed
-    if (note.reminderDate != null) {
-      await notifService.cancelNotification(notifId);
-    }
-
-    // Schedule new notification
-    if (reminderDate != null && reminderDate.isAfter(DateTime.now())) {
-      final hasPermission = await notifService.requestPermissions();
-      if (hasPermission) {
-        await notifService.scheduleNotification(
-          id: notifId,
-          title: 'Chunk Reminder',
-          body: note.title.isNotEmpty ? note.title : 'You have a scheduled chunk.',
-          scheduledDate: reminderDate,
-        );
-      } else {
-        // If permission is denied, do not save the reminder date
-        return; 
-      }
-    }
-
-    _notes[id] = note.copyWith(reminderDate: reminderDate, updatedAt: DateTime.now());
+    // ALWAYS save the reminder state first (UI must reflect user intent)
+    _notes[id] = note.copyWith(
+      reminderDate: reminderDate, 
+      clearReminderDate: reminderDate == null,
+      updatedAt: DateTime.now()
+    );
     _save();
     notifyListeners();
+
+    // Then attempt OS-level notification scheduling (best-effort)
+    try {
+      final notifService = NotificationService();
+      // Deterministic 32-bit Hex identifier derived directly from the persistent UUID
+      final int notifId = int.parse(id.replaceAll('-', '').substring(0, 8), radix: 16) & 0x7FFFFFFF;
+
+      // Clear old OS notification if it existed
+      if (note.reminderDate != null) {
+        await notifService.cancelNotification(notifId);
+      }
+
+      // Schedule new OS notification
+      if (reminderDate != null && reminderDate.isAfter(DateTime.now())) {
+        final hasPermission = await notifService.requestPermissions();
+        if (hasPermission) {
+          await notifService.scheduleNotification(
+            id: notifId,
+            title: 'Chunk Reminder',
+            body: note.title.isNotEmpty ? note.title : 'You have a scheduled chunk.',
+            scheduledDate: reminderDate,
+          );
+        }
+      }
+    } catch (e) {
+      // Notification scheduling failed (e.g., unsupported platform), but state is saved
+      debugPrint('Notification scheduling error: $e');
+    }
   }
 
   // CORE FEATURE: Convert a text line into a nested note

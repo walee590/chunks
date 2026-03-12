@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -210,9 +211,18 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                                'Active Reminder', 
                                style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)
                              ),
-                             Text(
-                               note.reminderDate!.toLocal().toString().replaceAll(':00.000', '').substring(0, 16),
-                               style: TextStyle(color: Colors.redAccent.withValues(alpha: 0.8), fontSize: 12),
+                             Builder(
+                               builder: (context) {
+                                 final d = note.reminderDate!.toLocal();
+                                 final min = d.minute.toString().padLeft(2, '0');
+                                 final hour = d.hour > 12 ? d.hour - 12 : (d.hour == 0 ? 12 : d.hour);
+                                 final ampm = d.hour >= 12 ? 'PM' : 'AM';
+                                 final dateStr = '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')} at $hour:$min $ampm';
+                                 return Text(
+                                   dateStr,
+                                   style: TextStyle(color: Colors.redAccent.withValues(alpha: 0.8), fontSize: 13),
+                                 );
+                               }
                              ),
                            ],
                          ),
@@ -343,62 +353,160 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   }
 
   void _showMoreOptionsBottomSheet(BuildContext context, NotesProvider provider, Note note) {
-    showCupertinoModalPopup(
+    showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (BuildContext ctx) {
-        return CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                final messenger = ScaffoldMessenger.of(context);
-                provider.deleteNote(widget.noteId);
-                Navigator.pop(ctx);
-                Navigator.pop(context);
-                messenger.showSnackBar(
-                  const SnackBar(
-                    content: Text('Note deleted'),
-                    duration: Duration(seconds: 1),
+        final theme = Theme.of(context);
+
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+            left: 20,
+            right: 20,
+            top: 12,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Drag Handle
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
                   ),
-                );
-              },
-              isDestructiveAction: true,
-              child: const Text('Delete'),
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                 provider.toggleArchive(widget.noteId);
-                 final isNowArchived = !note.isArchived;
-                 Navigator.pop(ctx);
-                 ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(
-                     content: Text(isNowArchived ? 'Note archived' : 'Note unarchived'),
-                     duration: const Duration(seconds: 1),
-                   ),
-                 );
-                 if (isNowArchived) {
-                   _saveNote();
-                   Navigator.pop(context);
-                 }
-              },
-              child: Text(note.isArchived ? 'Unarchive' : 'Archive'),
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(ctx);
-                _shareNote(note);
-              },
-              child: const Text('Send'),
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            onPressed: () {
-              Navigator.pop(ctx);
-            },
-            isDefaultAction: true,
-            child: const Text('Cancel'),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Delete
+              _buildOptionTile(
+                context,
+                icon: Icons.delete_outline,
+                label: 'Delete',
+                color: Colors.redAccent,
+                onTap: () {
+                  final messenger = ScaffoldMessenger.of(context);
+                  provider.deleteNote(widget.noteId);
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                  messenger.showSnackBar(
+                    const SnackBar(
+                      content: Text('Note deleted'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+
+              // Archive / Unarchive
+              _buildOptionTile(
+                context,
+                icon: note.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
+                label: note.isArchived ? 'Unarchive' : 'Archive',
+                color: theme.colorScheme.onSurface,
+                onTap: () {
+                  provider.toggleArchive(widget.noteId);
+                  final isNowArchived = !note.isArchived;
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(isNowArchived ? 'Note archived' : 'Note unarchived'),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
+                  if (isNowArchived) {
+                    _saveNote();
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              const SizedBox(height: 8),
+
+              // Send
+              _buildOptionTile(
+                context,
+                icon: Icons.share_outlined,
+                label: 'Send',
+                color: theme.colorScheme.onSurface,
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _shareNote(note);
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Cancel
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildOptionTile(BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    final theme = Theme.of(context);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, color: color, size: 22),
+              const SizedBox(width: 16),
+              Text(
+                label,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -432,6 +540,108 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     if (shareText.isNotEmpty) {
        Share.share(shareText);
     }
+  }
+
+  void _showNoteOptions(BuildContext context, NotesProvider provider, Note note) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (BuildContext ctx) {
+        final theme = Theme.of(context);
+
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+            left: 20,
+            right: 20,
+            top: 12,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Copy
+              _buildOptionTile(
+                context,
+                icon: Icons.copy_outlined,
+                label: 'Copy text',
+                color: theme.colorScheme.onSurface,
+                onTap: () {
+                  final textToCopy = note.title.isNotEmpty 
+                      ? '${note.title}\n\n${note.content}'
+                      : note.content;
+                  Clipboard.setData(ClipboardData(text: textToCopy));
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Copied to clipboard'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+
+              // Delete
+              _buildOptionTile(
+                context,
+                icon: Icons.delete_outline,
+                label: 'Delete note',
+                color: Colors.redAccent,
+                onTap: () {
+                  provider.deleteNote(note.id);
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Note deleted'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Cancel
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildReminderChip(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap}) {
@@ -797,7 +1007,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                               childCount: child.childIds.length,
                               subNotes: grandchildren,
                               onTap: () => _openChildNote(child),
-                              onLongPress: () {},
+                              onLongPress: () => _showNoteOptions(context, provider, child),
                             );
                           },
                         ),

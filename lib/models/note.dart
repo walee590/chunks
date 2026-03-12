@@ -52,6 +52,7 @@ class Note {
     DateTime? reminderDate,
     bool? isDeleted,
     bool? isArchived,
+    bool clearReminderDate = false,
   }) {
     return Note(
       id: id,
@@ -66,7 +67,7 @@ class Note {
       updatedAt: updatedAt ?? DateTime.now(),
       pinned: pinned ?? this.pinned,
       isList: isList ?? this.isList,
-      reminderDate: reminderDate ?? this.reminderDate,
+      reminderDate: clearReminderDate ? null : (reminderDate ?? this.reminderDate),
       isDeleted: isDeleted ?? this.isDeleted,
       isArchived: isArchived ?? this.isArchived,
     );
