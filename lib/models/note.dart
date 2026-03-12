@@ -51,6 +51,7 @@ class Note {
     DateTime? updatedAt,
     bool? pinned,
     bool? isList,
+    DateTime? reminderDate,
     bool? isDeleted,
     bool? isArchived,
     bool? isGridView,
