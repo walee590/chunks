@@ -56,11 +56,11 @@ class NotesProvider extends ChangeNotifier {
             n.content.toLowerCase().contains(q);
       }).toList();
     }
-    // Pinned first, then by updatedAt descending
+    // Pinned first, then by createdAt ascending (Oldest First) as requested
     roots.sort((a, b) {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
-      return b.updatedAt.compareTo(a.updatedAt);
+      return a.createdAt.compareTo(b.createdAt);
     });
     return roots;
   }
