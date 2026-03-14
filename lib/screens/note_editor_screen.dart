@@ -678,13 +678,13 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
           controller: _contentController,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85),
-            fontSize: 20,
+            fontSize: provider.fontSize + 4, // Editor font specifically larger +4
           ),
           decoration: InputDecoration(
             hintText: 'Write here...',
             border: InputBorder.none,
             hintStyle: TextStyle(
-              fontSize: 20,
+              fontSize: provider.fontSize + 4,
               color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
             ),
           ),
@@ -960,7 +960,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                               TextField(
                                 controller: _titleController,
                                 style: TextStyle(
-                                  fontSize: 40,
+                                  fontSize: provider.fontSize + 24, // Scale Title significantly
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
@@ -968,7 +968,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                                   hintText: 'Title',
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(
-                                    fontSize: 40,
+                                    fontSize: provider.fontSize + 24,
                                     fontWeight: FontWeight.bold,
                                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
                                   ),
@@ -1181,6 +1181,7 @@ class _ChecklistItemState extends State<ChecklistItem> {
                     ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5) 
                     : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85),
                 decoration: widget.isChecked ? TextDecoration.lineThrough : null,
+                fontSize: Provider.of<NotesProvider>(context).fontSize,
               ),
               cursorColor: Theme.of(context).colorScheme.primary,
               onChanged: (val) {

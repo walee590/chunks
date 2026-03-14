@@ -4,6 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../models/note.dart';
 import '../theme/app_theme.dart';
+import '../providers/notes_provider.dart';
+import 'bionic_text.dart';
+import 'package:provider/provider.dart';
 
 class NoteCard extends StatelessWidget {
   final Note note;
@@ -28,6 +31,7 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final provider = Provider.of<NotesProvider>(context);
     
     // Logic: If isNeutral, use specific neutral color. Else use Vibrant/AppTheme color.
     final cardColor = isNeutral
@@ -93,11 +97,12 @@ class NoteCard extends StatelessWidget {
                         ),
                       ),
                     Expanded(
-                      child: Text(
-                        note.title,
+                      child: BionicText(
+                        text: note.title,
+                        enabled: provider.isBionicEnabled,
                         style: TextStyle(
-                          fontSize: 17, // Upped slightly
-                          fontWeight: FontWeight.w600, // Restored w600 for sharp legibility
+                          fontSize: provider.fontSize + 3, // Title slightly larger than body
+                          fontWeight: FontWeight.w600,
                           color: titleColor,
                           height: 1.3,
                         ),
@@ -185,12 +190,13 @@ class NoteCard extends StatelessWidget {
                     }).toList(),
                   )
                 else
-                  Text(
-                    note.content,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  BionicText(
+                    text: note.content,
+                    enabled: provider.isBionicEnabled,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: contentColor,
                       height: 1.45, 
-                      fontSize: 16, // Upped slightly
+                      fontSize: provider.fontSize,
                     ),
                     maxLines: 6,
                     overflow: TextOverflow.ellipsis,

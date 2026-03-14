@@ -17,11 +17,12 @@ class StorageService {
           notesMap[entry.key] =
               Note.fromJson(entry.value as Map<String, dynamic>);
         }
-        final rootIds = (parsed['rootIds'] as List<dynamic>?)
-                ?.map((e) => e as String)
-                .toList() ??
-            [];
-        return {'notes': notesMap, 'rootIds': rootIds};
+        return {
+          'notes': notesMap, 
+          'rootIds': rootIds,
+          'fontSize': (parsed['fontSize'] as num?)?.toDouble() ?? 14.0,
+          'isBionicEnabled': parsed['isBionicEnabled'] as bool? ?? false,
+        };
       } catch (_) {
         // Corrupt data, return empty
       }
@@ -30,13 +31,18 @@ class StorageService {
   }
 
   static Future<void> saveData(
-      Map<String, Note> notes, List<String> rootIds) async {
+      Map<String, Note> notes, List<String> rootIds, {double? fontSize, bool? isBionicEnabled}) async {
     final prefs = await SharedPreferences.getInstance();
     final notesJson = <String, dynamic>{};
     for (final entry in notes.entries) {
       notesJson[entry.key] = entry.value.toJson();
     }
-    final data = jsonEncode({'notes': notesJson, 'rootIds': rootIds});
+    final data = jsonEncode({
+      'notes': notesJson, 
+      'rootIds': rootIds,
+      'fontSize': fontSize ?? 14.0,
+      'isBionicEnabled': isBionicEnabled ?? false,
+    });
     await prefs.setString(_storageKey, data);
   }
 }

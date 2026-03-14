@@ -11,6 +11,8 @@ class NotesProvider extends ChangeNotifier {
   bool _isLoaded = false;
   ThemeMode _themeMode = ThemeMode.dark; // Default to Dark (User preference)
   String _searchQuery = '';
+  double _fontSize = 14.0;
+  bool _isBionicEnabled = false;
 
   final _uuid = const Uuid();
 
@@ -20,9 +22,24 @@ class NotesProvider extends ChangeNotifier {
   bool get isLoaded => _isLoaded; // Keep original getter
   String get searchQuery => _searchQuery;
   ThemeMode get themeMode => _themeMode; // New getter
+  double get fontSize => _fontSize;
+  bool get isBionicEnabled => _isBionicEnabled;
 
   void toggleTheme() {
     _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    _save(); // Persist theme change
+    notifyListeners();
+  }
+
+  void setFontSize(double size) {
+    _fontSize = size;
+    _save();
+    notifyListeners();
+  }
+
+  void toggleBionic() {
+    _isBionicEnabled = !_isBionicEnabled;
+    _save();
     notifyListeners();
   }
 
@@ -37,13 +54,15 @@ class NotesProvider extends ChangeNotifier {
     if (data['rootIds'] != null) {
       _rootIds = List<String>.from(data['rootIds']);
     }
+    _fontSize = data['fontSize'] as double? ?? 14.0;
+    _isBionicEnabled = data['isBionicEnabled'] as bool? ?? false;
     _isLoaded = true;
     notifyListeners();
   }
 
   // Persist to storage
   Future<void> _save() async {
-    await StorageService.saveData(_notes, _rootIds);
+    await StorageService.saveData(_notes, _rootIds, fontSize: _fontSize, isBionicEnabled: _isBionicEnabled);
   }
 
   // Get root-level notes (filtered by search)

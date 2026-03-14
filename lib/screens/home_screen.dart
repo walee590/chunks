@@ -186,10 +186,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.settings),
+                  leading: const Icon(Icons.settings_outlined),
                   title: const Text('Settings'),
                   onTap: () {
-                     Navigator.pop(context);
+                     Navigator.pop(context); // Close drawer
+                     Navigator.push(
+                       context,
+                       CupertinoPageRoute(builder: (_) => const SettingsScreen()),
+                     );
                   },
                 ),
                 ListTile(
@@ -441,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     autofocus: true,
                     style: TextStyle(color: isDark ? Colors.white : Colors.black),
                     decoration: InputDecoration(
-                      hintText: 'Search your notes...',
+                      hintText: provider.isBionicEnabled ? 'Search Bionic Notes...' : 'Search your notes...',
                       hintStyle: TextStyle(color: isDark ? Colors.white54 : Colors.black38),
                       border: InputBorder.none,
                     ),
