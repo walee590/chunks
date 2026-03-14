@@ -17,6 +17,10 @@ class StorageService {
           notesMap[entry.key] =
               Note.fromJson(entry.value as Map<String, dynamic>);
         }
+        final rootIds = (parsed['rootIds'] as List<dynamic>?)
+                ?.map((e) => e as String)
+                .toList() ??
+            [];
         return {
           'notes': notesMap, 
           'rootIds': rootIds,

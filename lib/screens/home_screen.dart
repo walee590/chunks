@@ -10,6 +10,7 @@ import 'note_editor_screen.dart';
 import 'drawing_screen.dart';
 import 'bin_screen.dart';
 import 'archive_screen.dart';
+import 'settings_screen.dart';
 import '../theme/app_theme.dart';
 import 'dart:ui';
 

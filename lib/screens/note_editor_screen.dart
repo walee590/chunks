@@ -671,7 +671,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     );
   }
 
-  Widget _buildContentEditor() {
+  Widget _buildContentEditor(NotesProvider provider) {
     if (!_isList) {
        // Standard Text Editor
        return TextField(
@@ -976,7 +976,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                                 maxLines: null,
                               ),
                             const SizedBox(height: 8),
-                            _buildContentEditor(),
+                            _buildContentEditor(provider),
                           ],
                         ),
                       ),
